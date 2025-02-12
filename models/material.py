@@ -1,9 +1,29 @@
-from odoo import models
+from odoo import fields, models
 
 
 class Material(models.Model):
-    ...
+    _name = 'keda.material'
+    _description = 'Material details'
+    _sql_constraints = [
+        ('code_unique', 'unique(code)', 'Codes must be unique'),
+    ]
+
+    code = fields.Integer(required=True, copy=False)
+    name = fields.Char()
+    type = fields.Selection(
+        string='Material Type',
+        selection=[
+            ('fabric', 'Fabric'),
+            ('jeans', 'Jeans'),
+            ('cotton', 'Cotton'),
+        ]
+    )
+    buy_price = fields.Float()
+    supplier_id = fields.Many2one('keda.supplier', string='Supplier')
 
 
 class Supplier(models.Model):
-    ...
+    _name = 'keda.supplier'
+    _description = 'Material suppliers'
+
+    name = fields.Char(required=True)
