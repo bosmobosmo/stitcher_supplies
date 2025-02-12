@@ -2,11 +2,16 @@ import json
 
 from odoo import exceptions, http
 
+CONTROLLER_PATH = "/bosmobosmo"
+
 
 class KedaController(http.Controller):
 
     @http.route(
-        '/auth', auth='none', methods=['POST'], csrf=False, type='json',
+        f'{CONTROLLER_PATH}/auth',
+        auth='none',
+        methods=['POST'],
+        csrf=False, type='json',
     )
     def authenticate(self, *args, **post):
         try:
@@ -22,7 +27,11 @@ class KedaController(http.Controller):
         res = http.request.env['ir.http'].session_info()
         return res
 
-    @http.route('/list-materials', auth='user', methods=['GET'])
+    @http.route(
+        f'{CONTROLLER_PATH}/list-materials',
+        auth='user',
+        methods=['GET']
+    )
     def list_materials(self):
         material_model = http.request.env['keda.material']
         material_objects = material_model.search([])
