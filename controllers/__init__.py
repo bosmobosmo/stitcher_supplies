@@ -117,3 +117,24 @@ class KedaController(http.Controller):
         # But the error won't get caught even with BaseException
         material.write(post)
         return "Material updated successfully"
+
+    # Added for manual testing
+    @http.route(
+        f'{CONTROLLER_PATH}/create-material',
+        auth='user',
+        csrf=False,
+        methods=['POST']
+    )
+    def create_material(self, *args, **post):
+        material_model = http.request.env['keda.material']
+        material_id = post.get("id")
+        search_param = []
+        if material_id is not None:
+            search_param.append(int(material_id))
+        material = material_model.browse(search_param)
+        if material.exists():
+            return f"Material with id {material_id} already exists"
+        # Tried using a try...except block
+        # But the error won't get caught even with BaseException
+        material.create(post)
+        return "Material created successfully"
