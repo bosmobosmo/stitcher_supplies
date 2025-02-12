@@ -25,7 +25,7 @@ class KedaController(http.Controller):
     @http.route('/list-materials', auth='user', methods=['GET'])
     def list_materials(self):
         material_model = http.request.env['keda.material']
-        material_objects = material_model.search()
+        material_objects = material_model.search([])
         materials = []
         for material_object in material_objects:
             materials.append({
