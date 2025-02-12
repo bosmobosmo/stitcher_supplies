@@ -1,5 +1,5 @@
 {
-    'name': 'keda-backend-test',
+    'name': 'keda',
     'depends': [
         'base'
     ],
