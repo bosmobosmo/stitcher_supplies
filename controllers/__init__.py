@@ -55,8 +55,22 @@ class KedaController(http.Controller):
     # get specific material
     def get_material(self): ...
 
-    # get list of suppliers
-    def list_suppliers(self): ...
+    @http.route(
+        f'{CONTROLLER_PATH}/list-suppliers',
+        auth='user',
+        methods=['GET']
+    )
+    def list_suppliers(self):
+        supplier_model = http.request.env['keda.supplier']
+        supplier_objects = supplier_model.search([])
+        suppliers = [
+            {
+                'Id': supplier.id,
+                'Name': supplier.name
+            }
+            for supplier in supplier_objects
+        ]
+        return json.dumps(suppliers)
 
     # delete a material
     def delete_material(self): ...
