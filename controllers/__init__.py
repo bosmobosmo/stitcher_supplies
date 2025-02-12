@@ -97,5 +97,27 @@ class KedaController(http.Controller):
         material_object.unlink()
         return f"Material with id {material_id} removed"
 
-    # update a material
-    def update_material(self, *args, **post): ...
+    @http.route(
+        f'{CONTROLLER_PATH}/update-material',
+        auth='user',
+        csrf=False,
+        methods=['POST']
+    )
+    def update_material(self, *args, **post):
+        material_model = http.request.env['keda.material']
+        try:
+            material_id = int(post["id"])
+        except (KeyError, ValueError, TypeError):
+            http.Response.status = '400'
+            return "Please provide a valid material id"
+        material = material_model.browse([material_id])
+        if not (material.exists()):
+            return f"Material with id {material_id} does not exist"
+        try:
+            material.write(post)
+        except Exception as e:
+            logger.exception(e)
+            http.Response.status = '400'
+            return "Error when trying to update the material"
+
+        return "Material updated successfully"
