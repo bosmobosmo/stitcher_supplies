@@ -23,7 +23,7 @@ class Material(models.Model):
             ('cotton', 'Cotton'),
         ]
     )
-    buy_price = fields.Float()
+    buy_price = fields.Float(required=True)
     supplier_id = fields.Many2one('keda.supplier', string='Supplier')
 
 
