@@ -1,1 +1,1 @@
-from .material import Material as Material
+from . import material
