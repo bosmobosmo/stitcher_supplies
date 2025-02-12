@@ -37,12 +37,12 @@ class KedaController(http.Controller):
     def list_materials(self, *args, **params):
         material_type = params.get("type", None)
         material_model = http.request.env['keda.material']
-        material_objects = material_model.search([])
+        search_params = []
+        if material_type is not None:
+            search_params.append(('type', '=', material_type))
+        material_objects = material_model.search(search_params)
         materials = []
         for material_object in material_objects:
-            if material_type is not None:
-                if getattr(material_object, 'type', None) != material_type:
-                    continue
             materials.append({
                 'Code': material_object.code,
                 'Name': getattr(material_object, 'name', ""),
