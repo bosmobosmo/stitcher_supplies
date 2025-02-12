@@ -2,7 +2,6 @@ import json
 from logging import getLogger
 
 from odoo import exceptions, http, tools
-from psycopg2 import IntegrityError
 
 CONTROLLER_PATH = "/bosmobosmo"
 logger = getLogger(__name__)
