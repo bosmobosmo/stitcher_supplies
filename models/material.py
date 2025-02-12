@@ -24,7 +24,7 @@ class Material(models.Model):
         ]
     )
     buy_price = fields.Float(required=True)
-    supplier_id = fields.Many2one('keda.supplier', string='Supplier')
+    supplier_id = fields.Many2one('keda.supplier', string='Supplier', required=True)
 
 
 class Supplier(models.Model):
