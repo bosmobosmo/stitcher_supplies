@@ -1,9 +1,9 @@
 {
-    'name': 'keda_backend_test',
+    'name': 'stitcher_supplies',
     'application': 'true',
     'data': [
         'security/ir.model.access.csv',
-        'data/keda.supplier.csv',
-        'data/keda.material.csv',
+        'data/stitcher_supplies.supplier.csv',
+        'data/stitcher_supplies.material.csv',
     ],
 }

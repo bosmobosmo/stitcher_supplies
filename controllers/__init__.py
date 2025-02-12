@@ -7,7 +7,7 @@ CONTROLLER_PATH = "/bosmobosmo"
 logger = getLogger(__name__)
 
 
-class KedaController(http.Controller):
+class StitcherSuppliesController(http.Controller):
 
     @http.route(
         f'{CONTROLLER_PATH}/auth',
@@ -36,7 +36,7 @@ class KedaController(http.Controller):
     )
     def list_materials(self, *args, **params):
         material_type = params.get("type", None)
-        material_model = http.request.env['keda.material']
+        material_model = http.request.env['stitcher_supplies.material']
         search_params = []
         if material_type is not None:
             search_params.append(('type', '=', material_type))
@@ -52,7 +52,7 @@ class KedaController(http.Controller):
         methods=['GET']
     )
     def get_material(self, *args, **params):
-        material_model = http.request.env['keda.material']
+        material_model = http.request.env['stitcher_supplies.material']
         try:
             material_id = int(params["id"])
         except (KeyError, ValueError, TypeError):
@@ -72,7 +72,7 @@ class KedaController(http.Controller):
         methods=['GET']
     )
     def list_suppliers(self):
-        supplier_model = http.request.env['keda.supplier']
+        supplier_model = http.request.env['stitcher_supplies.supplier']
         suppliers = supplier_model.search([])
         return json.dumps(
             suppliers.read(),
@@ -85,7 +85,7 @@ class KedaController(http.Controller):
         methods=['GET']
     )
     def delete_material(self, *args, **params):
-        material_model = http.request.env['keda.material']
+        material_model = http.request.env['stitcher_supplies.material']
         try:
             material_id = int(params["id"])
         except (KeyError, ValueError, TypeError):
@@ -104,7 +104,7 @@ class KedaController(http.Controller):
         methods=['POST']
     )
     def update_material(self, *args, **post):
-        material_model = http.request.env['keda.material']
+        material_model = http.request.env['stitcher_supplies.material']
         try:
             material_id = int(post["id"])
         except (KeyError, ValueError, TypeError):
@@ -126,7 +126,7 @@ class KedaController(http.Controller):
         methods=['POST']
     )
     def create_material(self, *args, **post):
-        material_model = http.request.env['keda.material']
+        material_model = http.request.env['stitcher_supplies.material']
         material_id = post.get("id")
         search_param = []
         if material_id is not None:

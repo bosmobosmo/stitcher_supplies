@@ -7,14 +7,14 @@ from odoo.tests.common import SavepointCase
 logger = getLogger(__name__)
 
 
-@tagged('post_install', '-at_install', 'keda')
+@tagged('post_install', '-at_install', 'stitcher_supplies')
 class MaterialTestCase(SavepointCase):
 
     @classmethod
     def setUpClass(cls):
         super(MaterialTestCase, cls).setUpClass()
-        cls.materials = cls.env['keda.material']
-        cls.suppliers = cls.env['keda.supplier']
+        cls.materials = cls.env['stitcher_supplies.material']
+        cls.suppliers = cls.env['stitcher_supplies.supplier']
 
     def test_invalid_buy_price(self):
         with self.assertRaises(errors.CheckViolation):

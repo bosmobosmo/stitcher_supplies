@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class Material(models.Model):
-    _name = 'keda.material'
+    _name = 'stitcher_supplies.material'
     _description = 'Material details'
     _sql_constraints = [
         ('code_unique', 'unique(code)', 'Codes must be unique'),
@@ -24,11 +24,11 @@ class Material(models.Model):
         ]
     )
     buy_price = fields.Float(required=True)
-    supplier_id = fields.Many2one('keda.supplier', string='Supplier', required=True)
+    supplier_id = fields.Many2one('stitcher_supplies.supplier', string='Supplier', required=True)
 
 
 class Supplier(models.Model):
-    _name = 'keda.supplier'
+    _name = 'stitcher_supplies.supplier'
     _description = 'Material suppliers'
 
     name = fields.Char(required=True)
