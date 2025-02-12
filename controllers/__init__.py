@@ -1,7 +1,7 @@
 import json
 from logging import getLogger
 
-from odoo import exceptions, http
+from odoo import exceptions, http, tools
 
 CONTROLLER_PATH = "/bosmobosmo"
 logger = getLogger(__name__)
@@ -41,19 +41,30 @@ class KedaController(http.Controller):
         if material_type is not None:
             search_params.append(('type', '=', material_type))
         material_objects = material_model.search(search_params)
-        materials = []
-        for material_object in material_objects:
-            materials.append({
-                'Code': material_object.code,
-                'Name': getattr(material_object, 'name', ""),
-                'Type': getattr(material_object, 'type', ""),
-                'Buy Price': getattr(material_object, 'buy_price'),
-                'Supplier Name': material_object.supplier_id.name
-            })
-        return json.dumps(materials)
+        return json.dumps(
+            material_objects.read(),
+            default=tools.date_utils.json_default
+        )
 
-    # get specific material
-    def get_material(self): ...
+    @http.route(
+        f'{CONTROLLER_PATH}/get-material',
+        auth='user',
+        methods=['GET']
+    )
+    def get_material(self, *args, **params):
+        material_model = http.request.env['keda.material']
+        try:
+            material_id = int(params["id"])
+        except (KeyError, ValueError, TypeError):
+            http.Response.status = '400'
+            return "Please provide a valid material id"
+        material = material_model.browse([material_id])
+        if not (material.exists()):
+            return f"Material with id {material_id} does not exist"
+        return json.dumps(
+            material.read(),
+            default=tools.date_utils.json_default
+        )
 
     @http.route(
         f'{CONTROLLER_PATH}/list-suppliers',
@@ -62,15 +73,11 @@ class KedaController(http.Controller):
     )
     def list_suppliers(self):
         supplier_model = http.request.env['keda.supplier']
-        supplier_objects = supplier_model.search([])
-        suppliers = [
-            {
-                'Id': supplier.id,
-                'Name': supplier.name
-            }
-            for supplier in supplier_objects
-        ]
-        return json.dumps(suppliers)
+        suppliers = supplier_model.search([])
+        return json.dumps(
+            suppliers.read(),
+            default=tools.date_utils.json_default
+        )
 
     @http.route(
         f'{CONTROLLER_PATH}/delete-material',
