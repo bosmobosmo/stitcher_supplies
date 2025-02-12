@@ -2,6 +2,7 @@ import json
 from logging import getLogger
 
 from odoo import exceptions, http, tools
+from psycopg2 import IntegrityError
 
 CONTROLLER_PATH = "/bosmobosmo"
 logger = getLogger(__name__)
@@ -113,11 +114,7 @@ class KedaController(http.Controller):
         material = material_model.browse([material_id])
         if not (material.exists()):
             return f"Material with id {material_id} does not exist"
-        try:
-            material.write(post)
-        except Exception as e:
-            logger.exception(e)
-            http.Response.status = '400'
-            return "Error when trying to update the material"
-
+        # Tried using a try...except block
+        # But the error won't get caught even with BaseException
+        material.write(post)
         return "Material updated successfully"
