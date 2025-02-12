@@ -6,6 +6,11 @@ class Material(models.Model):
     _description = 'Material details'
     _sql_constraints = [
         ('code_unique', 'unique(code)', 'Codes must be unique'),
+        (
+            'buy_price_min',
+            'CHECK(buy_price >= 100)',
+            'Buy price must be at least 100'
+        )
     ]
 
     code = fields.Integer(required=True, copy=False)
