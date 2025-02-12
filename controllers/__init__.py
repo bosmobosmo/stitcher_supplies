@@ -72,8 +72,23 @@ class KedaController(http.Controller):
         ]
         return json.dumps(suppliers)
 
-    # delete a material
-    def delete_material(self): ...
+    @http.route(
+        f'{CONTROLLER_PATH}/delete-material',
+        auth='user',
+        methods=['GET']
+    )
+    def delete_material(self, *args, **params):
+        material_model = http.request.env['keda.material']
+        try:
+            material_id = int(params["id"])
+        except (KeyError, ValueError, TypeError):
+            http.Response.status = '400'
+            return "Please provide a valid material id"
+        material_object = material_model.browse([material_id])
+        if not (material_object.exists()):
+            return f"Material with id {material_id} does not exist"
+        material_object.unlink()
+        return f"Material with id {material_id} removed"
 
     # update a material
     def update_material(self, *args, **post): ...
